@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>MOKEPON - crisvegadev</title>
+    <meta name="description" content="MOKEPON - crisvegadev">
+
+    <!-- Meta tags -->
+    <meta property="og:title" content="MOKEPON ">
+    <meta property="og:description" content="Mokepon is a code challenge provided by Platzi">
+    
+    <meta name="keywords" content="MOKEPON, platzi, programacion, curso, gratis!">
+    <meta name="author" content="crisvegadev">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+
+    <section id="petSelectionSection">
+        <h1 class="title">Mokepon</h1> 
+
+        <h2 class="subtitle">Set your username:</h2>
+        <input type="text" id="username" autocomplete="off" maxlength="11" minlength="3" title="username"/>
+
+        <h2 class="subtitle">Select your pet:</h2>
+
+        <div id='mokeponContainer'></div>
+
+        <button id="selectPetBtn" type="button">Select</button>
+    </section>
+
+    <section id="showMapSection">
+
+        <div id="welcome"></div>
+
+        <h2 class="subtitle">Explore the map</h2> 
+
+        <div class="petSelected">
+            <h2 class="subtitle">Your pet: </h2>
+            <div id="petSelected"></div>
+        </div>
+        
+        <canvas id="map"></canvas>
+        
+        <button
+            type="button" 
+            onmouseup="stopMoving()" 
+            onmousedown="movePlayer('up')" 
+            ontouchstart="movePlayer('up')"
+            ontouchend="stopMoving()"
+            >Arriba</button>
+        
+        <div>
+            <button
+                type="button" 
+                onmouseup="stopMoving()" 
+                onmousedown="movePlayer('left')" 
+                ontouchstart="movePlayer('left')"
+                ontouchend="stopMoving()"
+                >Izquierda</button>
+
+            <button
+                type="button" 
+                onmouseup="stopMoving()" 
+                onmousedown="movePlayer('down')" 
+                ontouchstart="movePlayer('down')"
+                ontouchend="stopMoving()"
+                >Abajo</button>
+                
+            <button
+                type="button" 
+                onmouseup="stopMoving()" 
+                onmousedown="movePlayer('right')"
+                ontouchstart="movePlayer('right')"
+                ontouchend="stopMoving()"
+                 >Derecha</button>
+        </div>
+    </section>
+
+    <section id="attackSelectionSection">
+        <h1 class="title">Mokepon</h1>
+
+        <div id="attcksbtn">
+            <h2 class="subtitle">Select your attack:</h2>
+            <div id='attacksContainer' class="attack-cards"></div>
+        </div>
+
+        <div id="messages">
+            <p id="cup">🏆</p>
+            <p id="result">Good luck!</p>
+
+            <section id="reset">
+                <button id="resetButton" type="button">Reset</button>
+            </section>
+        </div>
+
+        <div class="attacks">
+
+            <div class="player-attacks">
+                <p id="playerLifes">0</p>
+                <p id="playerPetSpan" class="text-center"></p>
+                <div id="attacksOfPlayer"></div>
+            </div>
+
+            <div class="enemy-attacks">   
+                <p id="enemyLifes">0</p>
+                <p id="enemyPet" class="text-center"></p>
+                <div id="attacksOfEnemy"></div>
+            </div>
+
+        </div>
+    </section>
+
+    <script src="./js/index.js"></script>
+</body>
+</html>
