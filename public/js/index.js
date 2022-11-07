@@ -1,4 +1,4 @@
-const HOST                      = 'http://192.168.100.2:3050'
+const HOST                      = 'http://localhost:3050'
 
 const mokeponContainer          = document.getElementById('mokeponContainer')
 const selectPetBtn              = document.getElementById('selectPetBtn')
@@ -20,6 +20,7 @@ const cup                       = document.getElementById('cup')
 const resetButton               = document.getElementById('resetButton')
 const attcksbtn                 = document.getElementById('attcksbtn')
 
+let enemyDataId
 let playerId
 let enemyId
 let interval
@@ -47,7 +48,7 @@ canvasMap.width     = mapWidth
 canvasMap.height    = mapWidth * 600 / 800
 
 class Mokepon {
-    constructor(name, photo, life, photoMapSrc, id = null, attacks) {
+    constructor(name, photo, life, photoMapSrc, id = null, attacks, isInBattle = false) {
         this.id = id
         this.name = name
         this.photo = photo
@@ -61,6 +62,7 @@ class Mokepon {
         this.photoMap.src = photoMapSrc
         this.speedX = 0
         this.speedY = 0
+        this.isInBattle = isInBattle
     }
 
     drawInCanvas() {
@@ -260,13 +262,13 @@ function drawCanvas() {
     lienzo.drawImage(backgroundMap, 0, 0, canvasMap.width, canvasMap.height)
 
     playerPetObject.drawInCanvas()
-
+    
     sendPosition(playerPetObject.x, playerPetObject.y)
-
+    
     enemyMokepones.forEach((enemy) => {
         if (enemy !== undefined) {
-            enemy.drawInCanvas()
             checkCollision(enemy)
+            enemy.drawInCanvas()
         }
     })
 }
@@ -300,7 +302,9 @@ function sendPosition(x, y) {
                                 `./assets/mokepons_mokepon_${enemyName}_attack.png`,
                                 5,
                                 `./assets/${enemyName}.png`,
-                                 enemy.id
+                                 enemy.id,
+                                 [],
+                                 enemy.isInBattle
                             )
         
                             enemyMokepon.x = enemy.x
@@ -321,19 +325,19 @@ function checkCollision(enemy) {
         playerPetObject.y < enemy.y + enemy.height &&
         playerPetObject.y + playerPetObject.height > enemy.y) {
 
-        stopMoving()
+            enemyId = enemy.id
 
-        clearInterval(interval)
+            showMapSection.style.display = 'none'
+            attackSelectionSection.style.display = 'flex'
 
-        enemyId = enemy.id
+            stopMoving()
 
-        localStorage.setItem('enemyId', enemyId)
-
-        selectEnemyPet(enemy)
-
-        showMapSection.style.display = 'none'
-        attackSelectionSection.style.display = 'flex'
-
+            clearInterval(interval)
+                    
+            localStorage.setItem('enemyId', enemyId)
+                    
+            selectEnemyPet(enemy)
+            
     }
 }
 
@@ -383,7 +387,6 @@ function sendAttacks() {
 
 function getAttacks(){
 
-    console.log('getAttacks out')
     
     fetch(`${HOST}/mokepon/${enemyId}/ataques`)
     .then(function (res) {
@@ -393,8 +396,6 @@ function getAttacks(){
                 if (ataques.length === 5) {
                     
                     clearInterval(intervalo)
-
-                    console.log("getAttacks")
 
                     attackEnemy = ataques
                     fight()
@@ -416,7 +417,7 @@ function fight(){
         ) {
             playerVictory++
         }else if (playerAttacks[index] === attackEnemy[index]) {
-           console.log("TIE")
+           
         } else {
             enemyVictory++
         }
@@ -429,8 +430,6 @@ function fight(){
         enemyLifes.innerHTML = enemyVictory
     }
     
-    console.log("fight")
-
     checkLifes()
 }
 
@@ -444,7 +443,6 @@ function createMessage(){
     attacksOfPlayer.appendChild(nap)
     attacksOfEnemy.appendChild(nae)
 
-    console.log("createMessage")
 }
 
 function indexTwo(player, enemy){
@@ -467,7 +465,6 @@ function checkLifes(){
         result.innerHTML = 'YOU LOST!'
     }
 
-    console.log("checkLifes")
 
     // delay
     setTimeout(() => {

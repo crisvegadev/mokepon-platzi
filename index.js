@@ -14,6 +14,10 @@ class Jugador {
     this.id = id
   }
 
+  asignarBatalla() {
+    this.isInBattle = true
+  }
+
   asignarMokepon(mokepon) {
     this.mokepon = mokepon
   }
@@ -36,7 +40,6 @@ class Mokepon {
 
 app.get("/unirse", (req, res) => {
 
-  // Set limit to max 6 players
   if (jugadores.length === 6) {
     res.status(400).send("El servidor está lleno")
     return
@@ -72,6 +75,7 @@ app.post("/mokepon/:jugadorId", (req, res) => {
   console.log(jugadores)
 
   console.log(`\n+++++++++++++ ++++++++++++++++++++++++++++++++++ +++++++++++++\n`)
+
   res.end()
 })
 
@@ -113,8 +117,6 @@ app.post("/mokepon/:jugadorId/ataques", (req, res) => {
 })
 
 app.get("/mokepon/:jugadorId/ataques", (req, res) => {
-
-  console.log(jugadores)
 
   const jugadorId = req.params.jugadorId || ""
   const jugador = jugadores.find((jugador) => jugador.id === jugadorId)

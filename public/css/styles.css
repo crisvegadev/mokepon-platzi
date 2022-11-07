@@ -108,6 +108,7 @@ input:checked + label {
     margin: 10px 0px;
     transform: scale(1.1);
     font-weight: bold;
+    margin: 0px 10px;
 }
 
 input:checked + label img {
