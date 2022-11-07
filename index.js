@@ -1,7 +1,8 @@
 const express = require("express")
 const cors = require("cors")
-
 const app = express()
+
+const PORT = 3009
 
 app.use(express.static('public'))
 app.use(cors())
@@ -147,6 +148,6 @@ app.delete("/mokepon/:playerId/eliminar", (req, res) => {
   res.end()
 })
 
-app.listen(3050, () => {
-  console.log(`Server start at http://localhost:8000`)
+app.listen(PORT, () => {
+  console.log(`Server start at http://localhost:${PORT}`)
 })

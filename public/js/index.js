@@ -1,4 +1,4 @@
-const HOST                      = 'http://localhost:3050'
+const HOST                      = 'http://localhost:3009'
 
 const mokeponContainer          = document.getElementById('mokeponContainer')
 const selectPetBtn              = document.getElementById('selectPetBtn')
@@ -386,8 +386,6 @@ function sendAttacks() {
 }
 
 function getAttacks(){
-
-    
     fetch(`${HOST}/mokepon/${enemyId}/ataques`)
     .then(function (res) {
         if (res.ok) {
@@ -398,7 +396,10 @@ function getAttacks(){
                     clearInterval(intervalo)
 
                     attackEnemy = ataques
-                    fight()
+
+                    setTimeout(() => {
+                        fight()
+                    }, 1000)
                 }
             })
         }
@@ -416,16 +417,17 @@ function fight(){
             (playerAttacks[index] === 'PLANTA' && attackEnemy[index] === 'AGUA')
         ) {
             playerVictory++
+            indexTwo(index, index)
+            createMessage()
         }else if (playerAttacks[index] === attackEnemy[index]) {
-           
+            indexTwo(index, index)
+            createMessage()
         } else {
             enemyVictory++
+            indexTwo(index, index)
+            createMessage()
         }
-
-        indexTwo(index, index)
         
-        createMessage()
-
         playerLifes.innerHTML = playerVictory
         enemyLifes.innerHTML = enemyVictory
     }
@@ -434,15 +436,14 @@ function fight(){
 }
 
 function createMessage(){
-    let nap = document.createElement('p')
-    let nae = document.createElement('p')
 
-    nap.innerHTML = indexPlayer
-    nae.innerHTML = indexEnemy
+        let nap = document.createElement('p')
+        nap.innerHTML = indexPlayer
+        attacksOfPlayer.appendChild(nap)
 
-    attacksOfPlayer.appendChild(nap)
-    attacksOfEnemy.appendChild(nae)
-
+        let nae = document.createElement('p')
+        nae.innerHTML = indexEnemy
+        attacksOfEnemy.appendChild(nae)
 }
 
 function indexTwo(player, enemy){
@@ -465,8 +466,6 @@ function checkLifes(){
         result.innerHTML = 'YOU LOST!'
     }
 
-
-    // delay
     setTimeout(() => {
         deleteData()
     }, 1000)
