@@ -1,8 +1,12 @@
 # PlatziChallenge: Mokepon
 
+Desarrolla un juego web con HTML, CSS, JavaScript y Node.js. Elige a tu mascota favorita y enfrenta a otros Mokepones en peleas épicas de agua, fuego y tierra.
+
+![Preview](./screenshot.png)
+
 ## NOTA
 
-Si deseas jugar contra ti mismo necesitaras abrir la pagina en dos navegadores diferentes
+Si deseas jugar contra ti mismo necesitaras abrir la pagina en dos navegadores diferentes o dispositivos diferentes (LAN)
 
 ### Instalación
 
@@ -24,13 +28,10 @@ node index.js
 
 ### El reto
 
-Users should be able to:
+Usuarios deberian poder:
 
-- Play versus others players
-
-### Captura de pantalla
-
-![Preview](./screenshot.png)
+- Jugar contra otros jugadores 
+- Jugar en una red LAN
 
 ## Mi proceso
 
