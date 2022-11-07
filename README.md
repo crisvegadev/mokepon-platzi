@@ -16,42 +16,38 @@ npm install
 node index.js
 ```
 
-### Debug
+### Probar
 
 - localhost:3050
 
-## Overview
+## Resumen
 
-### The challenge
+### El reto
 
 Users should be able to:
 
 - Play versus others players
 
-### Screenshot
+### Captura de pantalla
 
 ![Preview](./screenshot.png)
 
-### Links
+## Mi proceso
 
-- Live game: [Demo](https://mokepon.crisvega.dev/)
+### Hecho con
 
-## My process
-
-### Built with
-
-- Semantic HTML5 markup
-- CSS custom properties
+- HTML5
+- CSS
 - Flexbox
-- Mobile-first workflow
+- Mobile-first
 - JS Vanilla
 - ExpressJS
 
-## Authors
+## Autores
 
 - Hecho con 💚 por  [@crisvegadev](https://www.github.com/crisvegadev)
 
 
-## License
+## Licencia
 
 [MIT](https://choosealicense.com/licenses/mit/)

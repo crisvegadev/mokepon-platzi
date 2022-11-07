@@ -1,4 +1,7 @@
+import Mokepon from "./mokepon.js"
+
 const HOST                      = 'http://localhost:3009'
+const MOKEPON_SIZE = 40
 
 const mokeponContainer          = document.getElementById('mokeponContainer')
 const selectPetBtn              = document.getElementById('selectPetBtn')
@@ -20,7 +23,6 @@ const cup                       = document.getElementById('cup')
 const resetButton               = document.getElementById('resetButton')
 const attcksbtn                 = document.getElementById('attcksbtn')
 
-let enemyDataId
 let playerId
 let enemyId
 let interval
@@ -30,7 +32,6 @@ let mokepones       = []
 let enemyMokepones  = []
 let attackButtons   = []
 let playerAttacks   = []
-let enemyAttacks    = []
 let attackEnemy     = []
 let playerVictory   = 0
 let enemyVictory    = 0
@@ -47,89 +48,80 @@ if (mapWidth > maxWidthMap) mapWidth = maxWidthMap - 20
 canvasMap.width     = mapWidth
 canvasMap.height    = mapWidth * 600 / 800
 
-class Mokepon {
-    constructor(name, photo, life, photoMapSrc, id = null, attacks, isInBattle = false) {
-        this.id = id
-        this.name = name
-        this.photo = photo
-        this.life = life
-        this.attacks = attacks
-        this.width = 40
-        this.height = 40
-        this.x = random(0, map.width - this.width)
-        this.y = random(0, map.height - this.height)
-        this.photoMap = new Image()
-        this.photoMap.src = photoMapSrc
-        this.speedX = 0
-        this.speedY = 0
-        this.isInBattle = isInBattle
-    }
+let hipodoge    = new Mokepon({
+    name: 'Hipodoge',
+    photo: './assets/mokepons_mokepon_hipodoge_attack.png',
+    photoMapSrc: './assets/hipodoge.png',
+    id: null,
+    isInBattle: false,
+    x: random(0, map.width - MOKEPON_SIZE),
+    y: random(0, map.height - MOKEPON_SIZE),
+    attacks: [
+        { name: '💧', id: 'btn-water' },
+        { name: '💧', id: 'btn-water' },
+        { name: '💧', id: 'btn-water' },
+        { name: '🔥', id: 'btn-fire' },
+        { name: '🌱', id: 'btn-dirt' },
+    ],
+})
 
-    drawInCanvas() {
-        lienzo.drawImage(
-            this.photoMap,
-            this.x,
-            this.y,
-            this.width,
-            this.height
-        )
-        lienzo.fillStyle = '#eeeeee'
-        lienzo.fillRect(this.x - 2, this.y - 14, this.width + 23, 11)
-        
-        var gradient = lienzo.createLinearGradient(0, 0, canvasMap.width , 0);
-        gradient.addColorStop("0"," magenta");
-        gradient.addColorStop("0.5", "blue");
-        gradient.addColorStop("1.0", "red");
+let capipepo    = new Mokepon({
+    name: 'Capipepo',
+    photo: './assets/mokepons_mokepon_capipepo_attack.png',
+    photoMapSrc: './assets/capipepo.png',
+    id: null,
+    isInBattle: false,
+    x: random(0, map.width - MOKEPON_SIZE),
+    y: random(0, map.height - MOKEPON_SIZE),
+    attacks: [
+        { name: '🌱', id: 'btn-dirt' },
+        { name: '🌱', id: 'btn-dirt' },
+        { name: '🌱', id: 'btn-dirt' },
+        { name: '💧', id: 'btn-water' },
+        { name: '🔥', id: 'btn-fire' },
+    ],
+})
 
-        lienzo.fillStyle = gradient
-        lienzo.font = '10px Arial bold'
-        lienzo.fillText(username.value, this.x + 5, this.y - 5)
-
-        // preven out of map
-        if (this.x < 0) this.x = 0
-        if (this.x > map.width - this.width) this.x = map.width - this.width
-        if (this.y < 0) this.y = 0
-        if (this.y > map.height - this.height) this.y = map.height - this.height
-
-
-    }
-}
-
-let hipodoge    = new Mokepon('Hipodoge', './assets/mokepons_mokepon_hipodoge_attack.png', 5, './assets/hipodoge.png', null, [
-    { name: '💧', id: 'btn-water' },
-    { name: '💧', id: 'btn-water' },
-    { name: '💧', id: 'btn-water' },
-    { name: '🔥', id: 'btn-fire' },
-    { name: '🌱', id: 'btn-dirt' },
-])
-
-let capipepo    = new Mokepon('Capipepo', './assets/mokepons_mokepon_capipepo_attack.png', 5, './assets/capipepo.png', null, [
-    { name: '🌱', id: 'btn-dirt' },
-    { name: '🌱', id: 'btn-dirt' },
-    { name: '🌱', id: 'btn-dirt' },
-    { name: '💧', id: 'btn-water' },
-    { name: '🔥', id: 'btn-fire' },
-])
-
-let ratigueya   = new Mokepon('Ratigueya', './assets/mokepons_mokepon_ratigueya_attack.png', 5, './assets/ratigueya.png', null, [
-    { name: '🔥', id: 'btn-fire' },
-    { name: '🔥', id: 'btn-fire' },
-    { name: '🔥', id: 'btn-fire' },
-    { name: '💧', id: 'btn-water' },
-    { name: '🌱', id: 'btn-dirt' },
-])
+let ratigueya    = new Mokepon({
+    name: 'Ratigueya',
+    photo: './assets/mokepons_mokepon_ratigueya_attack.png',
+    photoMapSrc: './assets/ratigueya.png',
+    id: null,
+    isInBattle: false,
+    x: random(0, map.width - MOKEPON_SIZE),
+    y: random(0, map.height - MOKEPON_SIZE),
+    attacks: [
+        { name: '🔥', id: 'btn-fire' },
+        { name: '🔥', id: 'btn-fire' },
+        { name: '🔥', id: 'btn-fire' },
+        { name: '💧', id: 'btn-water' },
+        { name: '🌱', id: 'btn-dirt' },
+    ],
+})
 
 mokepones.push(hipodoge, capipepo, ratigueya)
 
+/**
+ * @param {number} min
+ * @param {number} max
+ * @returns {number}
+ * @description return a random number between min and max
+ * @example random(1, 10)
+ *
+ * @returns {number}
+ * */
 function random(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
+/**
+ * @description init the game
+ */
 function initGame() {
 
-    plyrId = localStorage.getItem('playerId')
+    let playerIdLocalStorage = localStorage.getItem('playerId')
 
-    fetch(`${HOST}/mokepon/${plyrId}/eliminar`, { method: "delete" })
+    fetch(`${HOST}/mokepon/${playerIdLocalStorage}/eliminar`, { method: "delete" })
 
     mokepones.forEach((mokepon) => {
         mokeponContainer.innerHTML += `
@@ -150,6 +142,9 @@ function initGame() {
    joinToGame()
 }
 
+/**
+ * @description join to game on server
+ */
 function joinToGame() {
     fetch(`${HOST}/unirse`)
         .then((res) => {
@@ -164,6 +159,9 @@ function joinToGame() {
     )
 }
 
+/**
+ * @description select pet player and send to server
+ */
 function selectPetPlayer() {
     const mokeponSelected = document.querySelector('input[name="mokepon"]:checked');
 
@@ -176,11 +174,12 @@ function selectPetPlayer() {
         alert('El nombre de usuario debe tener entre 3 y 11 caracteres')
         return
     }
-    
 
     if (mokeponSelected != null) {
 
-        playerPetObject = getMokeponObjectByName(mokeponSelected.value)
+        playerPetObject = mokepones.find((mokepon) => mokepon.name === mokeponSelected.value)
+
+        // join to game
         playerPetObject.id = `${playerId}`
 
         playerPetSpan.innerHTML = `
@@ -207,8 +206,12 @@ function selectPetPlayer() {
 
 }
 
+/**
+ * @description send player pet to server
+ * 
+ * @param {Mokepon} mokepon 
+ */
 function setPlayerMokepon(mokepon) {
-
     fetch(`${HOST}/mokepon/${playerId}`, {
         method: "post",
         headers: {
@@ -220,27 +223,28 @@ function setPlayerMokepon(mokepon) {
     })
 }
 
-function getMokeponObjectByName(name) {
-    return mokepones.find((mokepon) => mokepon.name === name)
-}
-
+/**
+ * @description get mokepon attacks from the object and show them on the screen
+ * 
+ * @param {Mokepon} pet 
+ */
 function getMokeponAttacks(pet) {
     mokepones.filter((mokepon) => {
-        if (mokepon.name === pet.name) showMokeponAttacks(mokepon.attacks)
+        if (mokepon.name === pet.name) {
+            attacksContainer.innerHTML = ''
+            mokepon.attacks.forEach((attack) => {
+                attacksContainer.innerHTML += `
+                    <button id=${attack.id} class="attack-button">${attack.name}</button>
+                `
+            })
+            attackButtons = document.querySelectorAll('.attack-button')
+        }
     })
 }
 
-function showMokeponAttacks(attacks) {
-    attacksContainer.innerHTML = ''
-    attacks.forEach((attack) => {
-        attacksContainer.innerHTML += `
-            <button id=${attack.id} class="attack-button">${attack.name}</button>
-        `
-    })
-
-    attackButtons = document.querySelectorAll('.attack-button')
-}
-
+/**
+ * @description Start drawing the map and start the game
+ */
 function initMap() {
 
     petSelectionSection.style.display = 'none'
@@ -253,6 +257,9 @@ function initMap() {
     window.addEventListener('keyup', stopMoving)
 }
 
+/**
+ * @description move the player in the direction
+ */
 function drawCanvas() {
 
     playerPetObject.x += playerPetObject.speedX
@@ -261,18 +268,32 @@ function drawCanvas() {
     lienzo.clearRect(0, 0, canvasMap.width, canvasMap.height)
     lienzo.drawImage(backgroundMap, 0, 0, canvasMap.width, canvasMap.height)
 
-    playerPetObject.drawInCanvas()
+    playerPetObject.drawInCanvas({ 
+        lienzo: lienzo, 
+        canvasWidth: canvasMap.width, 
+        username: username.value, 
+    })
     
     sendPosition(playerPetObject.x, playerPetObject.y)
     
     enemyMokepones.forEach((enemy) => {
         if (enemy !== undefined) {
             checkCollision(enemy)
-            enemy.drawInCanvas()
+            enemy.drawInCanvas({ 
+                lienzo: lienzo, 
+                canvasWidth: canvasMap.width, 
+                username: username, 
+            })
         }
     })
 }
 
+/**
+ * @description send the position of the player to the server
+ * 
+ * @param {number} x 
+ * @param {number} y
+ */
 function sendPosition(x, y) {
     fetch(`${HOST}/mokepon/${playerId}/posicion`, {
         method: "post",
@@ -297,18 +318,16 @@ function sendPosition(x, y) {
                         if (enemy.mokepon !== undefined) {
                             let enemyName = enemy.mokepon.nombre.toLowerCase()
 
-                            let enemyMokepon = new Mokepon(
-                                `${enemyName}`,
-                                `./assets/mokepons_mokepon_${enemyName}_attack.png`,
-                                5,
-                                `./assets/${enemyName}.png`,
-                                 enemy.id,
-                                 [],
-                                 enemy.isInBattle
-                            )
-        
-                            enemyMokepon.x = enemy.x
-                            enemyMokepon.y = enemy.y
+                            let enemyMokepon = new Mokepon({
+                                name: enemyName,
+                                photo: `./assets/mokepons_mokepon_${enemyName}_attack.png`,
+                                photoMapSrc: `./assets/${enemyName}.png`,
+                                id: enemy.id,
+                                isInBattle: false,
+                                x: enemy.x,
+                                y: enemy.y,
+                                attacks: []
+                            })
 
                             return enemyMokepon
                         }
@@ -319,6 +338,11 @@ function sendPosition(x, y) {
     })
 }
 
+/**
+ * @description check if the player is in the same position as the enemy
+ *
+ * @param {Mokepon} enemy
+ */
 function checkCollision(enemy) {
     if (playerPetObject.x < enemy.x + enemy.width &&
         playerPetObject.x + playerPetObject.width > enemy.x &&
@@ -336,20 +360,28 @@ function checkCollision(enemy) {
                     
             localStorage.setItem('enemyId', enemyId)
                     
-            selectEnemyPet(enemy)
-            
+            showEnemyPet(enemy)
+
+            attackSequence()
     }
 }
 
-function selectEnemyPet(enemy) {
+/**
+ * @description Show pet enemy it in the screen
+ * 
+ * @param {Mokepon} enemy 
+ */
+function showEnemyPet(enemy) {
     enemyPet.innerHTML = `
         <img src=${enemy.photo} alt=${enemy.name} width=${enemy.width} height=${enemy.height}>
         <p>${enemy.name}</p>
         <p>(ENEMY)</p>
     `
-    attackSequence()
 }
 
+/**
+ * @description store the attack selected by the player
+ */
 function attackSequence() {
 
     let attks = {
@@ -366,13 +398,20 @@ function attackSequence() {
 
             playerAttacks.push(attks[e.target.textContent])
 
-            if (playerAttacks.length === 5) { sendAttacks() }
+            if (playerAttacks.length === 5) { 
+                sendAttacks() 
+
+                intervalo = setInterval(getAttacks, 50)
+            }
         })
 
         
     })
 }
 
+/**
+ * @description send the attacks to the server
+ */
 function sendAttacks() {
     fetch(`${HOST}/mokepon/${playerId}/ataques`, 
         {   
@@ -381,10 +420,11 @@ function sendAttacks() {
             body: JSON.stringify({ ataques: playerAttacks })
         }
     )
-    
-    intervalo = setInterval(getAttacks, 50)
 }
 
+/**
+ * @description get the attacks of the enemy
+ */
 function getAttacks(){
     fetch(`${HOST}/mokepon/${enemyId}/ataques`)
     .then(function (res) {
@@ -406,6 +446,9 @@ function getAttacks(){
     })
 }
 
+/**
+ * @description verify the winner of the fight based on the attacks of the player and the enemy
+ */
 function fight(){
     clearInterval(intervalo)
 
@@ -435,22 +478,34 @@ function fight(){
     checkLifes()
 }
 
+/**
+ * @description Show the attack of the player and the enemy
+ */
 function createMessage(){
 
-        let nap = document.createElement('p')
-        nap.innerHTML = indexPlayer
-        attacksOfPlayer.appendChild(nap)
+    let nap = document.createElement('p')
+    nap.innerHTML = indexPlayer
+    attacksOfPlayer.appendChild(nap)
 
-        let nae = document.createElement('p')
-        nae.innerHTML = indexEnemy
-        attacksOfEnemy.appendChild(nae)
+    let nae = document.createElement('p')
+    nae.innerHTML = indexEnemy
+    attacksOfEnemy.appendChild(nae)
 }
 
+/**
+ * Store the attack name of the player and the enemy
+ *
+ * @param {Mokepon} player
+ * @param {Mokepon} enemy
+ */
 function indexTwo(player, enemy){
     indexPlayer =  playerAttacks[player]
     indexEnemy = attackEnemy[enemy]
 }
 
+/**
+ * @description check if the player or the enemy has won the fight
+ */
 function checkLifes(){
 
     attcksbtn.style.display = 'none'
@@ -461,7 +516,6 @@ function checkLifes(){
         cup.style.display = 'block'
         playerPetSpan.style.transform = 'scale(1.5)'
         result.innerHTML = 'YOU WON!'
-        
     } else {
         result.innerHTML = 'YOU LOST!'
     }
@@ -472,11 +526,19 @@ function checkLifes(){
     
 }
 
+/**
+ *  @description delete the data of the player and enemy on the server
+ */
 function deleteData(){
     fetch(`${HOST}/mokepon/${playerId}/eliminar`, { method: "delete" })
     fetch(`${HOST}/mokepon/${enemyId}/eliminar`, { method: "delete" })
 }
 
+/**
+ * @description capture the keydown event and move the player
+ *  
+ * @param {Event}
+ */
 function handleKeyPress(e) {
     switch (e.keyCode) {
         case 37:
@@ -496,31 +558,17 @@ function handleKeyPress(e) {
     }
 }
 
+/**
+ * @description stop the player movement
+ */
 function stopMoving() {
     playerPetObject.speedX = 0
     playerPetObject.speedY = 0
 }
 
-function movePlayer(moveTo) {
-    switch (moveTo) {
-        case 'left':
-            playerPetObject.speedX = -5
-            break;
-        case 'up':
-            playerPetObject.speedY = -5
-            break;
-        case 'right':
-            playerPetObject.speedX = 5
-            break;
-        case 'down':
-            playerPetObject.speedY = 5
-            break;
-        default:
-            break;
-    }
-
-}
-
+/** 
+ * @description reset the game
+ */
 async function reset(){
     location.reload()
 }
